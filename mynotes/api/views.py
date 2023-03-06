@@ -3,24 +3,54 @@ from api.models import Note
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from api.serializer import NoteSerializer
+from rest_framework import status
 
 @api_view(['GET'])
 def homePage(request):
-    return HttpResponse("Hello World")
+    routes = [
+        {
+            'Endpoint': '/notes/',
+            'method': 'GET',
+            'body': None,
+            'description': 'Returns an array of notes'
+        },
+        {
+            'Endpoint': '/notes/id',
+            'method': 'GET',
+            'body': None,
+            'description': 'Returns a single note object'
+        },
+        {
+            'Endpoint': '/notes/create/',
+            'method': 'POST',
+            'body': {'body': ""},
+            'description': 'Creates new note with data sent in post request'
+        },
+        {
+            'Endpoint': '/notes/id/update/',
+            'method': 'PUT',
+            'body': {'body': ""},
+            'description': 'Creates an existing note with data sent in post request'
+        },
+        {
+            'Endpoint': '/notes/id/delete/',
+            'method': 'DELETE',
+            'body': None,
+            'description': 'Deletes and exiting note'
+        },
+    ]
+    return Response(routes)
 
 @api_view(['GET'])
 def getNotes(request):
     noteData = Note.objects.all()
-    data = {
-        'noteData': noteData
-    }
-    return Response("pk")
+    serializeNoteData = NoteSerializer(noteData, many=True)
+    return Response(serializeNoteData.data, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
 def getNote(request, notesId):
     noteData = Note.objects.get(id=notesId)
-    data = {
-        'noteData': noteData
-    }
-    return Response(notesId)
+    serializeNoteData = NoteSerializer(noteData, many=False)
+    return Response(serializeNoteData.data, status=status.HTTP_404_NOT_FOUND)
 
