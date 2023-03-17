@@ -54,3 +54,19 @@ def getNote(request, notesId):
     serializeNoteData = NoteSerializer(noteData, many=False)
     return Response(serializeNoteData.data, status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['PUT'])
+def updateNote(request, notesId):
+    data = request.data
+    note = Note.objects.get(id=notesId)
+    serializer = NoteSerializer(instance=note, data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+    
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+def deleteNote(request, notesId):
+    note = Note.objects.get(id=notesId)
+    note.delete()
+    return Response("note is deleted")
