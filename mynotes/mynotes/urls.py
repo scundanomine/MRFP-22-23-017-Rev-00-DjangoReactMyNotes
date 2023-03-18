@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", views.homePage),
     path("notes/", views.getNotes),
+    path("notes/create/", views.createNote),
     path("notes/<notesId>/update/", views.updateNote),
     path("notes/<notesId>/delete/", views.deleteNote),
     path("notes/<notesId>/", views.getNote)

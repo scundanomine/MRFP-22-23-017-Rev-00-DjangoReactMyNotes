@@ -70,3 +70,12 @@ def deleteNote(request, notesId):
     note = Note.objects.get(id=notesId)
     note.delete()
     return Response("Note is deleted!")
+
+@api_view(['POST'])
+def createNote(request):
+    postData = request.data
+    #sql=f"INSERT INTO Note (body) VALUES ('{postData['body']}')"
+    # noteData = Note.objects.raw(f"INSERT INTO Note (body) VALUES ('{postData['body']}')")
+    noteData = Note.objects.create(body=postData['body'])
+    serializeNoteData = NoteSerializer(noteData, many=False)
+    return Response(serializeNoteData.data, status=status.HTTP_404_NOT_FOUND)
