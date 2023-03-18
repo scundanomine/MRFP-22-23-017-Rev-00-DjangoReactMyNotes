@@ -27,7 +27,6 @@ const NotesListPage = () => {
       </div>
     </div>
   )
-  //awesome1
 }
 
 export default NotesListPage
